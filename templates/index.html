@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="DataCenter Guard - Monitoramento Preditivo de Servidores">
     <title>DataCenter Guard</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=3">
 </head>
 <body>
     <main class="page-shell">
         <header class="topbar">
             <div class="brand-logo">
-                <img src="datacenter-guard-logo.png" alt="Logo DataCenter Guard">
+                <img src="{{ url_for('static', filename='datacenter-guard-logo.png') }}" alt="Logo DataCenter Guard">
                 <span class="brand-name"><span>DataCenter</span><span>Guard</span></span>
             </div>
             <div class="system-state"><span></span>Sistema em execução</div>
@@ -92,6 +92,6 @@
         </section>
 
     </main>
-    <script src="script.js?v=2"></script>
+    <script src="{{ url_for('static', filename='script.js') }}?v=2"></script>
 </body>
 </html>
