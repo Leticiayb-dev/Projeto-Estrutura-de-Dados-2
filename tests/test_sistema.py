@@ -1,5 +1,5 @@
 from algoritmos import ArvoreBST, busca_binaria, insertion_sort, merge_sort
-from app import app
+from app import DataCenterGuard, id_servidor_valido
 from servidor import Servidor, calcular_risco, classificar_status
 
 
@@ -40,14 +40,19 @@ def test_busca_binaria_e_bst():
     assert [servidor.id for servidor in arvore.percorrer_em_ordem()] == ["SRV-001", "SRV-002", "SRV-003", "SRV-004"]
 
 
-def test_endpoints_principais():
-    client = app.test_client()
-    assert client.get("/").status_code == 200
-    assert len(client.get("/api/servidores").get_json()) == 4
-    assert client.get("/api/servidores/SRV-003").status_code == 200
-    assert client.get("/api/servidores/SRV-999").status_code == 404
-    assert client.post("/api/servidores/simular").status_code == 200
-    assert client.get("/api/algoritmos/insertion-sort").status_code == 200
-    assert client.get("/api/algoritmos/merge-sort").status_code == 200
-    assert client.get("/api/algoritmos/arvore").status_code == 200
-    assert client.get("/api/algoritmos/arvore/SRV-003").status_code == 200
+def test_operacoes_do_sistema_de_terminal():
+    sistema = DataCenterGuard()
+    assert len(sistema.servidores) == 4
+    assert sistema.buscar_por_id("srv-003").id == "SRV-003"
+    assert sistema.buscar_por_id("SRV-999") is None
+    assert sistema.buscar_na_arvore("srv-002").id == "SRV-002"
+
+    rodada_anterior = sistema.rodada_de_leituras
+    sistema.simular_leituras()
+    assert sistema.rodada_de_leituras == rodada_anterior + 1
+
+
+def test_validacao_do_formato_do_id():
+    assert id_servidor_valido("srv-003")
+    assert not id_servidor_valido("2")
+    assert not id_servidor_valido("SRV-03")
